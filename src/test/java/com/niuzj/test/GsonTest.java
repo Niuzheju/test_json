@@ -7,18 +7,25 @@ import com.niuzj.model.User;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * gson
+ */
 public class GsonTest {
 
     //默认方式
 //    private Gson gson = new Gson();
 
     /*
-        默认的gson对象会把值为null的属性忽略掉,使用以下方式创建gson对象不会忽略为null的属性
+        默认的gson对象会把值为null的属性忽略掉,
+        使用serializeNulls方法后不会忽略为null的属性
+        setDateFormat方法设置日期格式化格式
         GsonBuilder是一个配置类,可以配置很多属性
      */
-    private Gson gson = new GsonBuilder().serializeNulls().create();
+    private Gson gson = new GsonBuilder().serializeNulls().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
     //序列化
     @Test
@@ -44,10 +51,22 @@ public class GsonTest {
         list.add(User.getDefault());
         String s = gson.toJson(list);
         System.out.println("序列化:" + s);
-        list = gson.fromJson(s, new TypeToken<List<User>>() {}.getType());
+        list = gson.fromJson(s, new TypeToken<List<User>>() {
+        }.getType());
         System.out.println("反序列化:" + list);
     }
 
+    @Test
+    public void test04() {
+        Map<String, User> map = new HashMap<>();
+        map.put("001", User.getDefault());
+        map.put("002", User.getDefault());
+        String s = gson.toJson(map);
+        System.out.println("序列化:" + s);
+        map = gson.fromJson(s, new TypeToken<Map<String, User>>() {}.getType());
+        System.out.println("反序列化:" + map);
+
+    }
 
 
 }
