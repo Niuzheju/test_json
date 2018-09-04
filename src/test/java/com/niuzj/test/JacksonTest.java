@@ -1,7 +1,10 @@
 package com.niuzj.test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.databind.type.SimpleType;
 import com.niuzj.model.User;
 import org.junit.Test;
 
@@ -90,6 +93,16 @@ public class JacksonTest {
         byte[] b = {123, 34, 117, 115, 101, 114, 110, 97, 109, 101, 34, 58, 34, 110, 105, 117, 122, 106, 34, 44, 34, 97, 103, 101, 34, 58, 50, 51, 44, 34, 98, 105, 114, 116, 104, 100, 97, 121, 34, 58, 49, 53, 51, 53, 57, 54, 52, 56, 54, 49, 48, 48, 57, 44, 34, 109, 111, 110, 101, 121, 34, 58, 50, 46, 50, 51, 125};
         User user = mapper.readValue(b, User.class);
         System.out.println(user);
+    }
+
+    /**
+     * 复杂泛型反序列化
+     */
+    @Test
+    public void test09() throws IOException {
+        String s = "{\"001\":{\"username\":\"niuzj\",\"age\":23,\"birthday\":1536045639044,\"money\":3.36},\"002\":{\"username\":\"niuzj\",\"age\":23,\"birthday\":1536045639044,\"money\":0.68}}";
+        Map<String, User> map = mapper.readValue(s, MapType.construct(Map.class, null, null, null, SimpleType.constructUnsafe(String.class), SimpleType.constructUnsafe(User.class)));
+        System.out.println(map);
     }
 
 
